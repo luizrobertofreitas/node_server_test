@@ -8,7 +8,7 @@ module.exports = function(app, db) {
 	});
 
 	app.get('/notes', (req, res) => {
-		db.collection('notes').find((err, items) => {
+		db.collection('notes').find().toArray((err, items) => {
 			if (err) {
 				res.send({'error':'An error has occurred'});
 			} else {
