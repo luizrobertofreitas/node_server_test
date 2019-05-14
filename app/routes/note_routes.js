@@ -7,6 +7,21 @@ module.exports = function(app, db) {
 		res.send("Hey, I'm alive!");
 	});
 
+	app.get('/notes', (req, res) => {
+		db.collection('notes').find((err, items) => {
+			if (err) {
+				res.send({'error':'An error has occurred'});
+			} else {
+				if (items) {
+					res.send(items);
+				} else {
+					res.status(404);
+					res.send({'error':'There are no notes'});
+				}
+			}
+		});
+	});
+
 	app.get('/notes/:id', (req, res) => {
 		const details = {
 			'_id' : new ObjectID(req.params.id)
@@ -22,7 +37,6 @@ module.exports = function(app, db) {
 					res.status(404);
 					res.send({'error':'Note with id: ' + req.params.id + ' not found'});
 				}
-				
 			}
 		})
 	});
