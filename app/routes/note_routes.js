@@ -1,13 +1,19 @@
+const cors = require('cors')
+
+const corsOptions = {
+	origin: '*'
+}
+
 
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {
 
-	app.get('/', (req, res) => {
+	app.get('/', cors(corsOptions), (req, res) => {
 		res.send("Hey, I'm alive!");
 	});
 
-	app.get('/notes', (req, res) => {
+	app.get('/notes', cors(corsOptions), (req, res) => {
 		db.collection('notes').find().toArray((err, items) => {
 			if (err) {
 				res.send({'error':'An error has occurred'});
@@ -22,7 +28,7 @@ module.exports = function(app, db) {
 		});
 	});
 
-	app.get('/notes/:id', (req, res) => {
+	app.get('/notes/:id', cors(corsOptions), (req, res) => {
 		const details = {
 			'_id' : new ObjectID(req.params.id)
 		};
@@ -41,7 +47,7 @@ module.exports = function(app, db) {
 		})
 	});
 
-	app.delete('/notes/:id', (req, res) => {
+	app.delete('/notes/:id', cors(corsOptions), (req, res) => {
 		const details = {
 			'_id' : new ObjectID(req.params.id)
 		};
@@ -56,7 +62,7 @@ module.exports = function(app, db) {
 		});
 	});
 
-	app.put('/notes/:id', (req, res) => {
+	app.put('/notes/:id', cors(corsOptions), (req, res) => {
 		const details = {
 			'_id' : new ObjectID(req.params.id)
 		};
@@ -75,7 +81,7 @@ module.exports = function(app, db) {
 		})
 	});
 
-	app.post('/notes', (req, res) => {
+	app.post('/notes', cors(corsOptions), (req, res) => {
 		console.log(req.body);
 		const note = {
 			text: req.body.body, title: req.body.title
